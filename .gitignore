@@ -1,0 +1,57 @@
+# Dependencies
+/node_modules/
+
+# Build output
+/dist/
+/build/
+
+# Test coverage reports
+/coverage/
+
+# IDE and editor specific files
+/.idea/
+/.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary npm cache directory
+.npm
+
+# Compiled TypeScript files
+*.js
+*.jsx  # If you're using JSX
+
+# Compiled CoffeeScript files
+*.coffee
+
+# Compiled Less files
+*.less
+
+# Compiled Sass/SCSS files
+*.scss
+*.sass
+
+# Logs
+*.log
+
+# ESLint cache
+.eslintcache
+
+# Stylelint cache
+.stylelintcache
+
+# Babel cache
+.babelrc.cache
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+# Enviroment specific config files
+.env*  # Matches all files starting with ".env", including .env.local, etc.
+
+# Mac-specific files
+.DS_Store
+
+# Git related files
+!.gitignore
