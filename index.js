@@ -20,12 +20,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
   var _useState = (0, _react.useState)(null),
     _useState2 = _slicedToArray(_useState, 2),
-    application = _useState2[0],
-    setApplication = _useState2[1];
+    applications = _useState2[0],
+    setApplications = _useState2[1];
   (0, _react.useEffect)(function () {
     var fetchData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var now, projectId, response, data;
+        var now, projectId, _data$data, response, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -39,7 +39,7 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                  query: "query ApplicationQuery {\n                        applications(filter: {\n                          projectId: {equalTo: \"".concat(projectId, "\"}\n                          round: {\n                            donationsStartTime: {greaterThan: \"").concat(now, "\"}\n                            donationsEndTime: {lessThan: \"").concat(now, "\"}\n                          }\n                        }) {\n                          project {\n                            name\n                            anchorAddress\n                          }\n                          round {\n                            chainId\n                            id\n                            roundMetadata\n                          }\n                        }\n                      }"),
+                  query: "query ApplicationQuery {\n                        applications(filter: {\n                          projectId: {equalTo: \"".concat(projectId, "\"}\n                          round: {\n                            donationsStartTime: {lessThan: \"").concat(now, "\"}\n                            donationsEndTime: {greaterThan: \"").concat(now, "\"}\n                          }\n                        }) {\n                          project {\n                            id\n                            name\n                            anchorAddress\n                          }\n                          round {\n                            chainId\n                            id\n                            roundMetadata\n                          }\n                        }\n                      }"),
                   variables: null,
                   operationName: "ApplicationQuery"
                 })
@@ -50,7 +50,7 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
               return response.json();
             case 8:
               data = _context.sent;
-              setApplication(data);
+              if ((data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 || (_data$data = _data$data.applications) === null || _data$data === void 0 ? void 0 : _data$data.length) > 0) setApplications(data.data.applications);
               console.log("Data fetched:", data);
               _context.next = 16;
               break;
@@ -70,5 +70,5 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
     }();
     if (props.projectId) fetchData();
   }, [props.projectId]);
-  return /*#__PURE__*/_react["default"].createElement("div", null, application ? /*#__PURE__*/_react["default"].createElement("p", null, "Application ID: ", application.id) : /*#__PURE__*/_react["default"].createElement("p", null, "Loading application data..."));
+  return /*#__PURE__*/_react["default"].createElement("div", null, (applications === null || applications === void 0 ? void 0 : applications.length) > 0 ? /*#__PURE__*/_react["default"].createElement("p", null, "Project ID: ", applications[0].project.id) : /*#__PURE__*/_react["default"].createElement("p", null, "Loading application data..."));
 };

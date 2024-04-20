@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export const GtcWidget = (props) => {
-  const [application, setApplication] = useState(null);
+  const [applications, setApplications] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,11 +21,12 @@ export const GtcWidget = (props) => {
                         applications(filter: {
                           projectId: {equalTo: "${projectId}"}
                           round: {
-                            donationsStartTime: {greaterThan: "${now}"}
-                            donationsEndTime: {lessThan: "${now}"}
+                            donationsStartTime: {lessThan: "${now}"}
+                            donationsEndTime: {greaterThan: "${now}"}
                           }
                         }) {
                           project {
+                            id
                             name
                             anchorAddress
                           }
@@ -43,7 +44,7 @@ export const GtcWidget = (props) => {
         );
         const data = await response.json();
         if (data?.data?.applications?.length > 0)
-          setApplication(data.data.applications);
+          setApplications(data.data.applications);
 
         console.log("Data fetched:", data);
       } catch (error) {
@@ -55,8 +56,8 @@ export const GtcWidget = (props) => {
 
   return (
     <div>
-      {application ? (
-        <p>Application ID: {application.id}</p>
+      {applications?.length > 0 ? (
+        <p>Project ID: {applications[0].project.id}</p>
       ) : (
         <p>Loading application data...</p>
       )}
