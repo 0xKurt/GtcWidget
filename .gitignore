@@ -17,10 +17,6 @@
 # Temporary npm cache directory
 .npm
 
-# Compiled TypeScript files
-*.js
-*.jsx  # If you're using JSX
-
 # Compiled CoffeeScript files
 *.coffee
 
@@ -52,6 +48,3 @@ yarn.lock
 
 # Mac-specific files
 .DS_Store
-
-# Git related files
-!.gitignore
