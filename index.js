@@ -22,6 +22,10 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
     _useState2 = _slicedToArray(_useState, 2),
     applications = _useState2[0],
     setApplications = _useState2[1];
+  var _useState3 = (0, _react.useState)(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    selectedApplication = _useState4[0],
+    setSelectedApplication = _useState4[1];
   (0, _react.useEffect)(function () {
     var fetchData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -39,7 +43,7 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                  query: "query ApplicationQuery {\n                        applications(filter: {\n                          projectId: {equalTo: \"".concat(projectId, "\"}\n                          round: {\n                            donationsStartTime: {lessThan: \"").concat(now, "\"}\n                            donationsEndTime: {greaterThan: \"").concat(now, "\"}\n                          }\n                        }) {\n                          project {\n                            id\n                            name\n                            anchorAddress\n                          }\n                          round {\n                            chainId\n                            id\n                            roundMetadata\n                          }\n                        }\n                      }"),
+                  query: "query ApplicationQuery {\n                        applications(filter: {\n                          projectId: {equalTo: \"".concat(projectId, "\"}\n                          round: {\n                            donationsStartTime: {lessThan: \"").concat(now, "\"}\n                            donationsEndTime: {greaterThan: \"").concat(now, "\"}\n                          }\n                        }) {\n                          id\n                          project {\n                            id\n                            name\n                            anchorAddress\n                          }\n                          round {\n                            chainId\n                            id\n                            roundMetadata\n                          }\n                        }\n                      }"),
                   variables: null,
                   operationName: "ApplicationQuery"
                 })
@@ -50,7 +54,10 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
               return response.json();
             case 8:
               data = _context.sent;
-              if ((data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 || (_data$data = _data$data.applications) === null || _data$data === void 0 ? void 0 : _data$data.length) > 0) setApplications(data.data.applications);
+              if ((data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 || (_data$data = _data$data.applications) === null || _data$data === void 0 ? void 0 : _data$data.length) > 0) {
+                setApplications(data.data.applications);
+                setSelectedApplication(0);
+              }
               console.log("Data fetched:", data);
               _context.next = 16;
               break;
@@ -70,5 +77,51 @@ var GtcWidget = exports.GtcWidget = function GtcWidget(props) {
     }();
     if (props.projectId) fetchData();
   }, [props.projectId]);
-  return /*#__PURE__*/_react["default"].createElement("div", null, (applications === null || applications === void 0 ? void 0 : applications.length) > 0 ? /*#__PURE__*/_react["default"].createElement("p", null, "Project ID: ", applications[0].project.id) : /*#__PURE__*/_react["default"].createElement("p", null, "Loading application data..."));
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      padding: 5,
+      width: 250,
+      height: 80,
+      backgroundColor: "white"
+    }
+  }, /*#__PURE__*/_react["default"].createElement("select", {
+    style: {
+      width: "100%",
+      padding: "2px",
+      borderRadius: "10px"
+    },
+    onChange: function onChange(e) {
+      var selectedIndex = e.target.value;
+      setSelectedApplication(selectedIndex);
+    }
+  }, (applications === null || applications === void 0 ? void 0 : applications.length) > 0 ? applications.map(function (application, index) {
+    return /*#__PURE__*/_react["default"].createElement("option", {
+      key: index,
+      value: index
+    }, application.round.roundMetadata.name.slice(0, 26) + "...");
+  }) : /*#__PURE__*/_react["default"].createElement("option", null, "Loading application data...")), /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      backgroundColor: "gray",
+      color: "white",
+      width: "100%",
+      padding: "1px",
+      borderRadius: "10px",
+      textAlign: "center",
+      cursor: "pointer",
+      marginTop: "2px"
+    },
+    onClick: function onClick() {
+      var app = applications[selectedApplication];
+      var round = app.round;
+      window.open("https://explorer.gitcoin.co/#/round/".concat(round.chainId, "/").concat(round.id, "/").concat(app.id), "_blank");
+    }
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      fontSize: "small"
+    }
+  }, "Donate on"), /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      fontSize: "large"
+    }
+  }, "Gitcoin")));
 };
